@@ -1,246 +1,300 @@
-/*
- * CSS Credits:
- *  the starting point http://js13kgames.com/entries/lost-in-cyberspace
- *  flicker animation taken from http://goonhub.com/secret
- *  scanlines based on https://blog.carbonfive.com/2015/01/07/vintage-terminal-effect-in-css3/
- *  noise solution based on Temani Afif https://codepen.io/t_afif/pen/RwyqLKZ
- */
-body {
-    margin: 0;
-    background: black;
-}
-.terminal img[src*="blob:"], .terminal video {
-    max-width: 100%;
-}
-#terminal {
-    height: 100vh;
-}
-/* glow */
-.terminal {
-    text-shadow: 0 0.2rem 1rem #0c7b46;
-}
-:root {
-    --background: #031e11;
-}
-@media (min-width: 800px) {
-    :root {
-        --size: 1.2;
-    }
-}
-@media (min-width: 1200px) {
-    :root {
-        --size: 1.5;
-    }
-}
-/* to see yourself like in a mirror */
-.self {
-    transform: scale(-1, 1);
-}
-.flicker {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(18, 16, 16, 0.2);
-    opacity: 0;
-    z-index: 1000;
-    pointer-events: none;
-    animation: flicker 0.12s infinite;
-}
-@keyframes flicker {
-  0% {
-    opacity: 0.552;
-  }
-  5% {
-    opacity: 0.48287;
-  }
-  10% {
-    opacity: 0.59134;
-  }
-  15.0% {
-    opacity: 0.79543;
-  }
-  20% {
-    opacity: 0.75134;
-  }
-  25% {
-    opacity: 0.1956;
-  }
-  30.0% {
-    opacity: 0.90687;
-  }
-  35% {
-    opacity: 0.122;
-  }
-  40% {
-    opacity: 0.62254;
-  }
-  45% {
-    opacity: 0.56977;
-  }
-  50% {
-    opacity: 0.9925;
-  }
-  55.0% {
-    opacity: 0.55487;
-  }
-  60.0% {
-    opacity: 0.16607;
-  }
-  65% {
-    opacity: 0.12353;
-  }
-  70% {
-    opacity: 0.2214;
-  }
-  75% {
-    opacity: 0.67908;
-  }
-  80% {
-    opacity: 0.97163;
-  }
-  85.0% {
-    opacity: 0.1275;
-  }
-  90% {
-    opacity: 0.37186;
-  }
-  95% {
-    opacity: 0.24475;
-  }
-  100% {
-    opacity: 0.37221;
-  }
-}
-.scanlines {
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        rgba(255,255,255,0) 50%,
-        rgba(0,0,0,.2) 70%,
-        rgba(0,0,0,.6)
-    );
-    background-size: 100% .3rem;
-    position: fixed;
-    pointer-events: none;
-}
-.scanlines:before {
-  position: absolute;
-  top: 0px;
-  width: 100%;
-  height: 5px;
-  background: #fff;
-  background: linear-gradient(to bottom,
-      rgba(255,0,0,0) 0%,
-      rgba(255,250,250,1) 50%,
-      rgba(255,255,255,0.98) 51%,
-      rgba(255,0,0,0) 100%
-  ); /* W3C */
-  opacity: .1;
-}
-.scanlines:after {
-  box-shadow: 0 2px 6px rgba(25,25,25,0.2),
-      inset 0 1px rgba(50,50,50,0.1),
-      inset 0 3px rgba(50,50,50,0.05),
-      inset 0 3px 8px rgba(64,64,64,0.05),
-      inset 0 -5px 10px rgba(25,25,25,0.1);
-}
-#terminal:focus-within ~ .scanlines:before {
-    content: '';
-    display: block;
-    animation: vline calc(var(--time, 2) * 1s) linear infinite;
-}
-/*
- * MS Edge don't support focus-within and css vars
- * inside pseudo selector
- */
-@supports (-ms-ime-align:auto) {
-    .scanlines:before {
-        content: '';
-        animation: vline 3s linear infinite;
-    }
-}
-@keyframes vline {
-  to { transform: translate(0, 100vh)}
-}
-/* turn off animation */
-.tv {
-    height: 100vh;
-    position: relative;
-}
-.tv.collapse {
-    animation: size 2s ease-out;
-    animation-fill-mode: forwards;
-}
-.tv.collapse:before {
-    content: '';
-    display: block;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    background: white;
-    z-index: 1;
-    opacity: 0;
-    animation: opacity 2s ease-out;
-    animation-fill-mode: forwards;
+@import url(https://fonts.googleapis.com/css?family=VT323);
+
+@keyframes scroll {
+	0% { height: 0 }
+	100% { height: 100%; }
 }
 
-@keyframes opacity {
-    to { opacity: 1; }
+@keyframes type { 
+  from { width: 0; } 
+} 
+
+@keyframes type2 {
+  0%{width: 0;}
+  50%{width: 0;}
+  100%{ width: 100; } 
+} 
+
+@keyframes blink {
+  to{opacity: .0;}
 }
-@keyframes size {
-    50% {
-        transform: scaleX(calc(1 / var(--width)));
-        opacity: 1;
-    }
-    98% {
-        transform: scaleX(calc(1 / var(--width))) scaleY(calc(1 / var(--height)));
-        opacity: 1;
-    }
-    100% {
-        transform: scaleX(calc(1 / var(--width))) scaleY(calc(1 / var(--height)));
-        opacity: 0;
-    }  
+
+@keyframes scan {
+	from { top: 0 }
+	to { top: 100% }
 }
-#terminal {
-    padding-bottom: 36px;
+
+@keyframes flicker {
+		0% { opacity: 0.15795 }
+		5% { opacity: 0.31511 }
+		10% { opacity: 0.94554 }
+		15% { opacity: 0.2469 }
+		20% { opacity: 0.62031 }
+		25% { opacity: 0.0293 }
+		30% { opacity: 0.00899 }
+		35% { opacity: 0.5344 }
+		40% { opacity: 0.12778 }
+		45% { opacity: 0.52042 }
+		50% { opacity: 0.3823 }
+		55% { opacity: 0.2198 }
+		60% { opacity: 0.9383 }
+		65% { opacity: 0.86615 }
+		70% { opacity: 0.68695 }
+		75% { opacity: 0.55749 }
+		80% { opacity: 0.96984 }
+		85% { opacity: 0.0361 }
+		90% { opacity: 0.24467 }
+		95% { opacity: 0.08351 }
+		100% { opacity: 0.54813 }
+	}
+
+::-webkit-scrollbar {
+  display: none;
 }
-.collection {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 10px;
+
+* {
+	box-sizing: border-box;
+	}
+	
+html,
+body {
+  animation:colorPulse 5s infinite ease-in-out;	
+  background-image:radial-gradient(#444, #111);  
+	color: #37bf75;
+	font-size: 64.5%;
+	font-size: 1.4em;
+	font-family: 'VT323', Courier;
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
-.noise {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 2000;
-    opacity: 0.05;
-    pointer-events: none;
-    background: 
-        repeating-radial-gradient(#000 0 0.0001%,#fff 0 0.0002%) 50% 0/2500px 2500px,
-        repeating-conic-gradient(#000 0 0.0001%,#fff 0 0.0002%) 50% 50%/2500px 2500px;
-    background-blend-mode: difference;
-    animation: shift .2s infinite alternate;
+
+h1, h2, h3 h4, h5, h6 { 
+	font-weight: normal;
+	margin: 0;
+	text-transform: uppercase;
 }
-@keyframes shift {
-    100% {
-        background-position: 50% 0, 50% 60%;
-    }
+h4 b {
+  color: white;
 }
-@media (prefers-reduced-motion) {
-    .noise, .flicker, .scanlines:before {
-        animation: none !important;
-    }
+a {
+	color: #37bf75;	
+	text-decoration: none;	
 }
+
+a:hover {
+	color: #5fffa7;
+}
+
+p { 
+	line-height: 100%;
+	margin: 0; 
+}
+	
+span { animation: blink 1s infinite }
+
+ul {
+	list-style: none;
+}
+
+ul a:before,
+p a:before {
+	color: #37bf75;
+	content: ' > ';
+}
+
+ul a:after,
+p a:after {
+	color: #37bf75;
+	content: ' ';	
+}
+
+header.site {
+	margin: 0 0 40px 0;
+	text-transform: uppercase;
+}
+
+nav.site { 
+	margin: 0 0 40px 0;
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+nav.site ul {
+	padding: 0;
+}
+
+nav.site ul li {
+	display: inline-block;
+  padding: 0 10px;
+  min-width: 250px;
+  width: auto;
+}
+
+.overlay {
+	height: 1px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1px;
+}
+
+.overlay:before {
+	background: linear-gradient(#032817 50%, rgba(16, 16, 16, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.03));
+	background-size: 100% 3px, 6px 100%;
+	content: "";
+	display: block;
+	pointer-events: none;
+	position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	z-index: 2;
+}
+	
+.overlay:after {
+	animation: ;
+	content: "";
+	display: block;
+	pointer-events: none;
+	position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	z-index: 2;
+}
+
+.col {
+	float: left;
+	padding: 0 20px;
+}
+
+.col.two { width: auto; }
+
+.wrapper {
+  animation: scroll 5s 1;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+    scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.content { 
+	animation: scroll 3s 1;
+  overflow: hidden;
+	padding: 40px; 
+	position: relative;
+	width: 95%;
+}
+
+#logo-v {
+	display: block;
+	height: auto;
+	margin: 0 auto;
+	width: 200px;
+}
+
+img.pip-hero {
+	display: block;
+	float: left;
+	height: auto;
+	margin: 5px 10px 5px 0;
+	width: 120px;
+}
+
+form {}
+
+label {
+	clear: left;
+	display: block;
+	float: left;
+	margin-right: 10px;
+	padding-top: 5px;
+}
+
+input[type=text],
+textarea {
+	background: transparent;
+	border: none;
+	color: #37bf75;
+	display: block;
+	float: left;
+	font-family: 'VT323', Courier;
+	font-size: 1.2em;
+	position: relative;
+	width: 80%;
+	z-index: 10
+}
+
+textarea {
+	margin-bottom: 20px
+	overflow: auto;
+	resize: none;
+}
+
+input[type=text]:focus,
+textarea:focus,
+input[type=submit]:focus,
+a.button:focus {
+	outline: 0;
+}
+
+input[type=submit],
+a.button {
+	background: transparent;
+	border: 1px solid #00dd00;
+	clear: both;
+	color: #00dd00;
+	cursor: hand;
+	display: inline-block;
+	font-family: 'VT323', Courier;
+	font-size: 1em;
+	margin-bottom: 20px;
+	opacity: 0.25;
+	padding: 10px 100px;
+	position: relative;
+	text-decoration: none;
+	text-transform: uppercase;
+	z-index: 10;
+}
+
+input[type=submit]:hover,
+a.button:hover {
+	background: #00dd00;
+	color: #383838;
+	opacity: 0.8;
+}
+
+.expandingArea { position: relative }
+	
+.scanline {
+	animation: scroll 0s 0s infinite;
+	background: -moz-linear-gradient(top,  rgba(0,221,0,0) 0%, rgba(0,221,0,1) 50%, rgba(0,221,0,0) 100%);
+	background: -webkit-linear-gradient(top,  rgba(0,221,0,0) 0%,rgba(0,221,0,1) 50%,rgba(0,221,0,0) 100%);
+	background: linear-gradient(to bottom,  rgba(0,221,0,0) 0%,rgba(0,221,0,1) 50%,rgba(0,221,0,0) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0000dd00', endColorstr='#0000dd00',GradientType=0 );
+	display: block;
+	height: 20px;
+	opacity: 0.05;
+	position: absolute;
+		left: 0;
+		right: 0;
+		top: -5%;
+	z-index: 2;
+}
+
+.clear {
+	clear: both;
+}
+
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
+
+.upper { text-transform: uppercase; }
+
